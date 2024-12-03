@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useState } from 'react';
 import * as d3 from 'd3';
-import { Button, Switch } from 'antd';
+import { Button, Switch, Tooltip } from 'antd';
 import { DownloadOutlined } from "@ant-design/icons";
 import { TriangleGeneList } from './triangleGeneList.js';
 
@@ -304,20 +304,24 @@ export const HeatmapTriangle = ({ cellLineName, chromosomeName, geneName, curren
                 alignItems: 'center',
                 gap: '10px',
             }}>
-                <Switch
-                    checkedChildren="Partial"
-                    unCheckedChildren="Full"
-                    checked={!fullTriangleVisible}
-                    onChange={switchChange}
-                />
-                <Button
-                    style={{
-                        fontSize: 15,
-                        cursor: "pointer",
-                    }}
-                    icon={<DownloadOutlined />}
-                    onClick={downloadImage}
-                />
+                <Tooltip placement="bottom" title="Choose to display the upper or lower half of the heat map" overlayInnerStyle={{ color: '#333' }} color={"white"}>
+                    <Switch
+                        checkedChildren="Partial"
+                        unCheckedChildren="Full"
+                        checked={!fullTriangleVisible}
+                        onChange={switchChange}
+                    />
+                </Tooltip>
+                <Tooltip placement="bottom" title="Download current triangle heatmap" overlayInnerStyle={{ color: '#333' }} color={"white"}>
+                    <Button
+                        style={{
+                            fontSize: 15,
+                            cursor: "pointer",
+                        }}
+                        icon={<DownloadOutlined />}
+                        onClick={downloadImage}
+                    />
+                </Tooltip>
             </div>
             <canvas ref={canvasRef} />
             <svg ref={brushSvgRef} style={{ position: 'absolute', zIndex: 2, pointerEvents: 'all' }} />

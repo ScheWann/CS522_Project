@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Button, Input, Modal } from "antd";
+import { Button, Tooltip, Modal } from "antd";
 import { DownloadOutlined, ReloadOutlined, FullscreenOutlined } from "@ant-design/icons";
 import { GeneList } from './geneList.js';
 import { HeatmapTriangle } from './heatmapTriangle.js';
@@ -285,36 +285,44 @@ export const Heatmap = ({ cellLineName, chromosomeName, chromosomeData, selected
                         <span>{currentChromosomeSequence.end}</span>
                     </div>
                     <div style={{ display: 'flex', gap: '5px' }}>
-                        <Button
-                            size='small'
-                            style={{
-                                fontSize: 12,
-                                cursor: "pointer",
-                            }}
-                            icon={<ReloadOutlined />}
-                            onClick={() => setCurrentChromosomeSequence(selectedChromosomeSequence)}
-                        />
-                        <Button
-                            size='small'
-                            style={{
-                                fontSize: 12,
-                                cursor: "pointer",
-                            }}
-                            icon={<FullscreenOutlined />}
-                            onClick={openHalfHeatMapModal}
-                        />
-                        <Button
-                            size='small'
-                            style={{
-                                fontSize: 12,
-                                cursor: "pointer",
-                            }}
-                            icon={<DownloadOutlined />}
-                            onClick={download}
-                        />
-                        <Button size='small' color="primary" variant="outlined" onClick={generate3DChromosome} style={{ marginRight: 5, fontSize: 12 }}>
-                            Generate 3D
-                        </Button>
+                        <Tooltip placement="bottom" title="Reset to the original sequence" overlayInnerStyle={{ color: '#333' }} color={"white"}>
+                            <Button
+                                size='small'
+                                style={{
+                                    fontSize: 12,
+                                    cursor: "pointer",
+                                }}
+                                icon={<ReloadOutlined />}
+                                onClick={() => setCurrentChromosomeSequence(selectedChromosomeSequence)}
+                            />
+                        </Tooltip>
+                        <Tooltip placement="bottom" title="View detailed heatmap triangle area" overlayInnerStyle={{ color: '#333' }} color={"white"}>
+                            <Button
+                                size='small'
+                                style={{
+                                    fontSize: 12,
+                                    cursor: "pointer",
+                                }}
+                                icon={<FullscreenOutlined />}
+                                onClick={openHalfHeatMapModal}
+                            />
+                        </Tooltip>
+                        <Tooltip placement="bottom" title="Download non random HiC data(fdr < 0.05)" overlayInnerStyle={{ color: '#333' }} color={"white"}>
+                            <Button
+                                size='small'
+                                style={{
+                                    fontSize: 12,
+                                    cursor: "pointer",
+                                }}
+                                icon={<DownloadOutlined />}
+                                onClick={download}
+                            />
+                        </Tooltip>
+                        <Tooltip placement="bottom" title="Generate a 3D chromosome structure based on your current sequence selection" overlayInnerStyle={{ color: '#333' }} color={"white"}>
+                            <Button size='small' color="primary" variant="outlined" onClick={generate3DChromosome} style={{ marginRight: 5, fontSize: 12 }}>
+                                Generate 3D
+                            </Button>
+                        </Tooltip>
                     </div>
                 </div>
                 <Modal open={halfHeatMapModalVisible} onOk={() => setHalfHeatMapModalVisible(false)} onCancel={() => setHalfHeatMapModalVisible(false)} footer={null} width={"60vw"} styles={{ body: { overflowY: 'auto', maxHeight: '80vh' } }} >

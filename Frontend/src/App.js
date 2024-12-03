@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Select, Input, Button, message, Empty, Spin, Tabs, Switch, Tour } from 'antd';
+import { Select, Input, Button, message, Empty, Spin, Tabs, Switch, Tour, Tooltip } from 'antd';
 import './App.css';
 // import { Heatmap } from './heatmap.js';
 import { Heatmap } from './canvasHeatmap.js';
@@ -602,16 +602,18 @@ function App() {
                   style={{ width: '100%', height: '100%' }}
                   onChange={originalSampleChange}
                   tabBarExtraContent={
-                    <Button
-                      style={{
-                        fontSize: 15,
-                        cursor: "pointer",
-                        marginRight: 5,
-                      }}
-                      size="small"
-                      icon={<PlusOutlined />}
-                      onClick={handleAddChromosome3D}
-                    />
+                    <Tooltip placement="bottom" title="Generate a new 3D chromosome view for comparison" overlayInnerStyle={{ color: '#333' }} color={"white"}>
+                      <Button
+                        style={{
+                          fontSize: 15,
+                          cursor: "pointer",
+                          marginRight: 5,
+                        }}
+                        size="small"
+                        icon={<PlusOutlined />}
+                        onClick={handleAddChromosome3D}
+                      />
+                    </Tooltip>
                   }
                   items={new Array(3).fill(null).map((_, i) => {
                     const id = i;

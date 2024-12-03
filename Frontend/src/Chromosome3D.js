@@ -2,7 +2,7 @@ import React, { useMemo, useState, useRef } from 'react';
 import { Canvas } from '@react-three/fiber';
 import * as THREE from 'three';
 import { OrbitControls } from '@react-three/drei';
-import { Button, ColorPicker, Switch } from 'antd';
+import { Button, ColorPicker, Switch, Tooltip } from 'antd';
 import { DownloadOutlined, ReloadOutlined, ClearOutlined } from "@ant-design/icons";
 import { Chromosome3DDistance } from './Chromosome3DDistance';
 import "./Styles/Chromosome3D.css";
@@ -169,52 +169,64 @@ export const Chromosome3D = ({ chromosome3DExampleData, validChromosomeValidIbpD
                 alignItems: 'center',
                 gap: '10px',
             }}>
-                <Switch
-                    checkedChildren="All Genes"
-                    unCheckedChildren="First Gene"
-                    disabled={geneBeadSeq.length === 0}
-                    checked={isFullGeneVisible}
-                    style={{
-                        backgroundColor: isFullGeneVisible ? '#DAA520' : '#262626'
-                    }}
-                    onChange={() => setIsFullGeneVisible(!isFullGeneVisible)}
-                />
-                <ColorPicker
-                    value={selectedSphereList[selectedIndex]?.color || '#ffffff'}
-                    disabled={selectedIndex === null}
-                    onChange={handleColorChange}
-                />
-                <Button
-                    style={{
-                        fontSize: 15,
-                        cursor: "pointer",
-                    }}
-                    icon={<ClearOutlined />}
-                    onClick={resetSelectedBead}
-                />
-                <Button
-                    style={{
-                        fontSize: 15,
-                        cursor: "pointer",
-                    }}
-                    icon={<ReloadOutlined />}
-                    onClick={resetView}
-                />
-                <Button
-                    style={{
-                        fontSize: 15,
-                        cursor: "pointer",
-                    }}
-                    icon={<DownloadOutlined />}
-                    onClick={download}
-                />
-                <Button
-                    className={`custom-button ${Object.keys(selectedSphereList).length < 2 ? 'disabled' : ''}`}
-                    disabled={Object.keys(selectedSphereList).length < 2}
-                    onClick={() => setShowChromosome3DDistance(true)}
-                >
-                    Generate Distance
-                </Button>
+                <Tooltip placement="bottom" title="After gene selection, the gene distribution displayed in whole or in part on the 3D chromosome can be controlled by it" overlayInnerStyle={{ color: '#333' }} color={"white"}>
+                    <Switch
+                        checkedChildren="All Genes"
+                        unCheckedChildren="First Gene"
+                        disabled={geneBeadSeq.length === 0}
+                        checked={isFullGeneVisible}
+                        style={{
+                            backgroundColor: isFullGeneVisible ? '#DAA520' : '#262626'
+                        }}
+                        onChange={() => setIsFullGeneVisible(!isFullGeneVisible)}
+                    />
+                </Tooltip>
+                <Tooltip placement="bottom" title="Used for users to customize the color of the selected bead" overlayInnerStyle={{ color: '#333' }} color={"white"}>
+                    <ColorPicker
+                        value={selectedSphereList[selectedIndex]?.color || '#ffffff'}
+                        disabled={selectedIndex === null}
+                        onChange={handleColorChange}
+                    />
+                </Tooltip>
+                <Tooltip placement="bottom" title="Clear the selected beads" overlayInnerStyle={{ color: '#333' }} color={"white"}>
+                    <Button
+                        style={{
+                            fontSize: 15,
+                            cursor: "pointer",
+                        }}
+                        icon={<ClearOutlined />}
+                        onClick={resetSelectedBead}
+                    />
+                </Tooltip>
+                <Tooltip placement="bottom" title="Reset 3D chromosome position" overlayInnerStyle={{ color: '#333' }} color={"white"}>
+                    <Button
+                        style={{
+                            fontSize: 15,
+                            cursor: "pointer",
+                        }}
+                        icon={<ReloadOutlined />}
+                        onClick={resetView}
+                    />
+                </Tooltip>
+                <Tooltip placement="bottom" title="Download current 3D chromosome structure image" overlayInnerStyle={{ color: '#333' }} color={"white"}>
+                    <Button
+                        style={{
+                            fontSize: 15,
+                            cursor: "pointer",
+                        }}
+                        icon={<DownloadOutlined />}
+                        onClick={download}
+                    />
+                </Tooltip>
+                <Tooltip placement="bottom" title="Generate a 3D distance map below based on the selected beads" overlayInnerStyle={{ color: '#333' }} color={"white"}>
+                    <Button
+                        className={`custom-button ${Object.keys(selectedSphereList).length < 2 ? 'disabled' : ''}`}
+                        disabled={Object.keys(selectedSphereList).length < 2}
+                        onClick={() => setShowChromosome3DDistance(true)}
+                    >
+                        Generate Distance
+                    </Button>
+                </Tooltip>
             </div>
 
             <div style={{ height: showChromosome3DDistance ? '65%' : '100%', transition: 'height 0.3s ease' }}>
