@@ -654,15 +654,17 @@ function App() {
                           onChange={comparisonCellLineChange}
                           options={comparisonCellLineList}
                         />
-                        <Button
-                          style={{
-                            fontSize: 15,
-                            cursor: 'pointer',
-                          }}
-                          size="small"
-                          icon={<MinusOutlined />}
-                          onClick={handleRemoveChromosome3D}
-                        />
+                        <Tooltip placement="bottom" title="Close 3D chromosome structure comparison view" overlayInnerStyle={{ color: '#333' }} color={"white"}>
+                          <Button
+                            style={{
+                              fontSize: 15,
+                              cursor: 'pointer',
+                            }}
+                            size="small"
+                            icon={<MinusOutlined />}
+                            onClick={handleRemoveChromosome3D}
+                          />
+                        </Tooltip>
                       </div>
                     }
                     items={new Array(3).fill(null).map((_, i) => {
