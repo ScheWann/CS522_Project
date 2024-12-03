@@ -68,8 +68,8 @@ function App() {
       ),
       description: (
         <>
-          It shows the data distribution in your selection cell line and chromosome. 
-          The <span style={{ color: 'green', fontWeight: 'bold' }}>green color</span> shows the valid data, the <span style={{ color: '#999', fontWeight: 'bold'}}>blank area</span> represents the missing data, and the <span style={{ color: 'orange', fontWeight: 'bold'}}>orange color</span> shows your current valid data range with your selected sequences.
+          It shows the data distribution in your selection cell line and chromosome.
+          The <span style={{ color: 'green', fontWeight: 'bold' }}>green color</span> shows the valid data, the <span style={{ color: '#999', fontWeight: 'bold' }}>blank area</span> represents the missing data, and the <span style={{ color: 'orange', fontWeight: 'bold' }}>orange color</span> shows your current valid data range with your selected sequences.
         </>
       ),
       target: () => chromosomeBarRef.current,
@@ -486,7 +486,7 @@ function App() {
             }} />
           </div>
           {isCellLineMode ? (
-            <div ref={chromosomeRef}>
+            <div ref={chromosomeRef} style={{ width: '100%'}}>
               <span className="controlGroupText">Cell Line:</span>
               <Select
                 value={cellLineName}
@@ -513,6 +513,7 @@ function App() {
               <Input size="small" style={{ width: "10%", marginRight: 10 }} placeholder="Start" onChange={(e) => chromosomeSequenceChange('start', e.target.value)} value={selectedChromosomeSequence.start} />
               <span className="controlGroupText">~</span>
               <Input size="small" style={{ width: "10%", marginRight: 20 }} placeholder="End" onChange={(e) => chromosomeSequenceChange('end', e.target.value)} value={selectedChromosomeSequence.end} />
+              <Button ref={checkRef} size="small" color="primary" variant="outlined" onClick={submit}>Check</Button>
             </div>
           ) : (
             <>
@@ -540,18 +541,18 @@ function App() {
                 onSearch={geneNameSearch}
                 options={geneNameList}
               />
+              <Button ref={checkRef} size="small" color="primary" variant="outlined" onClick={submit}>Check</Button>
             </>
           )}
-          <Button ref={checkRef} size="small" color="primary" variant="outlined" onClick={submit}>Check</Button>
         </div>
-          <ChromosomeBar
-            parentRef={chromosomeBarRef}
-            warning={warning}
-            selectedChromosomeSequence={selectedChromosomeSequence}
-            setSelectedChromosomeSequence={setSelectedChromosomeSequence}
-            chromosomeSize={chromosomeSize}
-            totalChromosomeSequences={totalChromosomeSequences}
-          />
+        <ChromosomeBar
+          parentRef={chromosomeBarRef}
+          warning={warning}
+          selectedChromosomeSequence={selectedChromosomeSequence}
+          setSelectedChromosomeSequence={setSelectedChromosomeSequence}
+          chromosomeSize={chromosomeSize}
+          totalChromosomeSequences={totalChromosomeSequences}
+        />
       </div>
 
       {/* main content part */}
