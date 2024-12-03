@@ -2,9 +2,8 @@ import React, { useEffect, useRef, useState } from 'react';
 import * as d3 from 'd3';
 import "./Styles/chromosomeBar.css";
 
-export const ChromosomeBar = ({ chromosomeSize, selectedChromosomeSequence, setSelectedChromosomeSequence, totalChromosomeSequences, warning }) => {
+export const ChromosomeBar = ({ parentRef, chromosomeSize, selectedChromosomeSequence, setSelectedChromosomeSequence, totalChromosomeSequences, warning }) => {
     const svgRef = useRef();
-    const parentRef = useRef();
     const [tooltip, setTooltip] = useState({ visible: false, minStart: 0, maxEnd: 0, left: 0, top: 0 });
 
     useEffect(() => {

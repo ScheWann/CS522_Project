@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Select, Input, Button, message, Empty, Spin, Tabs, Switch } from 'antd';
+import React, { useState, useEffect, useRef } from 'react';
+import { Select, Input, Button, message, Empty, Spin, Tabs, Switch, Tour } from 'antd';
 import './App.css';
 // import { Heatmap } from './heatmap.js';
 import { Heatmap } from './canvasHeatmap.js';
@@ -13,7 +13,6 @@ function App() {
   const [geneNameList, setGeneNameList] = useState([]);
   const [cellLineList, setCellLineList] = useState([]);
   const [geneList, setGeneList] = useState([]);
-  const [epigeneticTrackData, setepigeneticTrackData] = useState({});
   const [chromosList, setChromosList] = useState([]);
   const [cellLineName, setCellLineName] = useState(null);
   const [geneName, setGeneName] = useState(null);
@@ -37,6 +36,60 @@ function App() {
   const [comparisonCellLine3DData, setComparisonCellLine3DData] = useState([]);
   const [comparisonCellLine3DSampleID, setComparisonCellLine3DSampleID] = useState(0);
   const [comparisonCellLine3DLoading, setComparisonCellLine3DLoading] = useState(false);
+
+  // Tutorial settings
+  const [open, setOpen] = useState(true);
+
+  // Refs for tutorial
+  const toggleRef = useRef(null);
+  const chromosomeRef = useRef(null);
+  const chromosomeBarRef = useRef(null);
+  const contentRef = useRef(null);
+  const checkRef = useRef(null);
+
+  // Tutorial settings
+  const steps = [
+    {
+      title: 'Mode Toggle',
+      description: 'You can switch between Cell Line and Gene mode. In Cell Line mode, you can select a cell line, chromosome, sequences to view the heatmap. In Gene mode, you can select cell line and a gene to view the heatmap.',
+      target: () => toggleRef.current,
+    },
+    {
+      title: 'Necessary Input Fields',
+      description: 'Based on your mode selection, complete all inputs.',
+      target: () => chromosomeRef.current,
+    },
+    {
+      title: 'Chromosome Bar',
+      cover: (
+        <img
+          src="/ChromosomeBarTourPic.png"
+        />
+      ),
+      description: (
+        <>
+          It shows the data distribution in your selection cell line and chromosome. 
+          The <span style={{ color: 'green', fontWeight: 'bold' }}>green color</span> shows the valid data, the <span style={{ color: '#999', fontWeight: 'bold'}}>blank area</span> represents the missing data, and the <span style={{ color: 'orange', fontWeight: 'bold'}}>orange color</span> shows your current valid data range with your selected sequences.
+        </>
+      ),
+      target: () => chromosomeBarRef.current,
+    },
+    {
+      title: 'Main Content',
+      description: 'It shows the non-random HiC heatmap data on the left and the 3D chromosome structure on the right.',
+      cover: (
+        <img
+          src="/ChromosomeContentTourPic.png"
+        />
+      ),
+      target: () => contentRef.current,
+    },
+    {
+      title: 'Check!',
+      description: 'After filling in the inputs, click the check button to view the heatmap data.',
+      target: () => checkRef.current,
+    }
+  ];
 
   useEffect(() => {
     if (!isCellLineMode) {
@@ -421,18 +474,19 @@ function App() {
   return (
     <div className="App">
       {contextHolder}
+      <Tour open={open} onClose={() => setOpen(false)} steps={steps} />
       {/* header part */}
       <div className="controlHeader">
         <div className="controlGroup">
           <div className='switchWrapper'>
-            <Switch checkedChildren="Cell Line" unCheckedChildren="Gene" checked={isCellLineMode} onChange={modeChange} size='small' style={{
+            <Switch ref={toggleRef} checkedChildren="Cell Line" unCheckedChildren="Gene" checked={isCellLineMode} onChange={modeChange} size='small' style={{
               width: "100%",
               marginLeft: 18,
               backgroundColor: isCellLineMode ? '#74C365' : '#ED9121'
             }} />
           </div>
           {isCellLineMode ? (
-            <>
+            <div ref={chromosomeRef}>
               <span className="controlGroupText">Cell Line:</span>
               <Select
                 value={cellLineName}
@@ -459,7 +513,7 @@ function App() {
               <Input size="small" style={{ width: "10%", marginRight: 10 }} placeholder="Start" onChange={(e) => chromosomeSequenceChange('start', e.target.value)} value={selectedChromosomeSequence.start} />
               <span className="controlGroupText">~</span>
               <Input size="small" style={{ width: "10%", marginRight: 20 }} placeholder="End" onChange={(e) => chromosomeSequenceChange('end', e.target.value)} value={selectedChromosomeSequence.end} />
-            </>
+            </div>
           ) : (
             <>
               <span className="controlGroupText">Cell Line:</span>
@@ -488,19 +542,20 @@ function App() {
               />
             </>
           )}
-          <Button size="small" color="primary" variant="outlined" onClick={submit}>Check</Button>
+          <Button ref={checkRef} size="small" color="primary" variant="outlined" onClick={submit}>Check</Button>
         </div>
-        <ChromosomeBar
-          warning={warning}
-          selectedChromosomeSequence={selectedChromosomeSequence}
-          setSelectedChromosomeSequence={setSelectedChromosomeSequence}
-          chromosomeSize={chromosomeSize}
-          totalChromosomeSequences={totalChromosomeSequences}
-        />
+          <ChromosomeBar
+            parentRef={chromosomeBarRef}
+            warning={warning}
+            selectedChromosomeSequence={selectedChromosomeSequence}
+            setSelectedChromosomeSequence={setSelectedChromosomeSequence}
+            chromosomeSize={chromosomeSize}
+            totalChromosomeSequences={totalChromosomeSequences}
+          />
       </div>
 
       {/* main content part */}
-      <div className='content'>
+      <div className='content' ref={contentRef}>
         {/* Heatmap */}
         {heatmapLoading ? (
           <Spin spinning={true} size="large" style={{ width: '35%', height: '100%', borderRight: "1px solid #eaeaea", margin: 0 }} />
